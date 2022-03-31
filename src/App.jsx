@@ -3,7 +3,6 @@ import Footer from './components/Footer';
 import Header from './components/Header';
 import CreateArea from './components/CreateArea';
 import Note from './components/Note';
-// import notes from './notes.js';
 
 const App = () => {
   const [notes, setNotes] = useState([]);
@@ -12,16 +11,26 @@ const App = () => {
       return [...prevNotes, newNote];
     });
   };
+
+  const deleteNote = id => {
+    setNotes(prevNotes => {
+      return prevNotes.filter((noteItem, index) => {
+        return index !== id;
+      });
+    });
+  };
+
   return (
     <>
       <Header />
       <CreateArea addNote={addNote} />
-      <Note title='title' content='hii' />
-      {notes.map(noteItem => (
+      {notes.map((noteItem, index) => (
         <Note
-          key={noteItem.key}
+          key={index}
+          id={index}
           title={noteItem.title}
           content={noteItem.content}
+          deleteNote={deleteNote}
         />
       ))}
       <Footer />
