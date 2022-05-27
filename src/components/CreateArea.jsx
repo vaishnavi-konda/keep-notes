@@ -1,32 +1,22 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
-export default function CreateArea(props) {
-  const [note, setNote] = useState({
-    title: '',
-    content: '',
-  });
+export default function CreateArea({ notes, setNotes }) {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
 
-  function handleChange(event) {
-    const { name, value } = event.target;
-
-    setNote(prevNote => {
-      return {
-        ...prevNote,
-        [name]: value,
-      };
+  const addNote = async () => {
+    const newNote = {
+      title,
+      content,
+    };
+    const res = await axios.post(`http://localhost:4000/api/notes`, newNote);
+    await setNotes(() => {
+      setTitle('');
+      setContent('');
+      return [...notes, res.data];
     });
-  }
-
-  function submitNote(event) {
-    props.addNote(note);
-
-    // Clear the inputs after adding notes
-    setNote({
-      title: '',
-      content: '',
-    });
-    event.preventDefault();
-  }
+  };
 
   return (
     <>
@@ -34,17 +24,21 @@ export default function CreateArea(props) {
         <input
           name='title'
           placeholder='Title'
-          value={note.title}
-          onChange={handleChange}
+          value={title}
+          onChange={event => {
+            setTitle(event.target.value);
+          }}
         />
         <textarea
           name='content'
           rows='4'
-          value={note.content}
+          value={content}
           placeholder='Type a note...'
-          onChange={handleChange}
+          onChange={event => {
+            setContent(event.target.value);
+          }}
         ></textarea>
-        <button onClick={submitNote}>Add</button>
+        <button onClick={addNote}>Add</button>
       </form>
     </>
   );

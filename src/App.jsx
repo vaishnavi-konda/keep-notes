@@ -1,36 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import CreateArea from './components/CreateArea';
 import Note from './components/Note';
+import axios from 'axios';
 
 const App = () => {
   const [notes, setNotes] = useState([]);
-  const addNote = newNote => {
-    setNotes(prevNotes => {
-      return [...prevNotes, newNote];
-    });
-  };
 
-  const deleteNote = id => {
-    setNotes(prevNotes => {
-      return prevNotes.filter((noteItem, index) => {
-        return index !== id;
-      });
-    });
-  };
+  useEffect(() => {
+    const fetchNotes = async () => {
+      const allNotes = await axios.get(`http://localhost:4000/api/`);
+      await setNotes(allNotes.data);
+    };
+    fetchNotes();
+  }, []);
 
   return (
     <>
       <Header />
-      <CreateArea addNote={addNote} />
+      <CreateArea notes={notes} setNotes={setNotes} />
       {notes.map((noteItem, index) => (
         <Note
           key={index}
-          id={index}
-          title={noteItem.title}
-          content={noteItem.content}
-          deleteNote={deleteNote}
+          noteItem={noteItem}
+          notes={notes}
+          setNotes={setNotes}
         />
       ))}
       <Footer />
