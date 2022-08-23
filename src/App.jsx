@@ -10,7 +10,7 @@ const App = () => {
 
   useEffect(() => {
     const fetchNotes = async () => {
-      const allNotes = await axios.get(`http://localhost:4000/api/`);
+      const allNotes = await axios.get(`https://keep-notes-backend.vercel.app/api/`);
       await setNotes(allNotes.data);
     };
     fetchNotes();
