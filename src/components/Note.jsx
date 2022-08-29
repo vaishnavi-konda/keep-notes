@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export default function Note({ noteItem, notes, setNotes }) {
   const deleteNote = async () => {
-    await axios.delete(`https://keep-notes-backend.vercel.app/api/notes/${noteItem._id}`);
+    await axios.delete(`https://keep-notes-backend.herokuapp.com/api/notes/${noteItem._id}`);
     await setNotes(notes.filter(eachNote => eachNote._id !== noteItem._id));
   };
 

@@ -10,7 +10,7 @@ export default function CreateArea({ notes, setNotes }) {
       title,
       content,
     };
-    const res = await axios.post(`https://keep-notes-backend.vercel.app/api/notes`, newNote);
+    const res = await axios.post(`https://keep-notes-backend.herokuapp.com/api/notes`, newNote);
     await setNotes(() => {
       setTitle('');
       setContent('');
